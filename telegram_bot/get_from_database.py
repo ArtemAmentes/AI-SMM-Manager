@@ -21,8 +21,11 @@ try:
     record = cursor.fetchone()
     print("Вы подключены к - ", record, "\n")
 
+
+
+
     # Получить результат
-    cursor.execute("SELECT * from users")
+    cursor.execute("SELECT * from slaves")
     record = cursor.fetchall()
     print("Результат", record)
 

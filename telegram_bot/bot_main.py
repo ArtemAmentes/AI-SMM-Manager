@@ -9,50 +9,50 @@ from aiogram.contrib.fsm_storage.memory import MemoryStorage
 
 from database_work import DatBase
 
-TOKEN = '5760477631:AAFXX77g6oFjEf5EVKPgodkPxjDkHOKvAjw'
-
 db = DatBase()
 
+TOKEN = '5760477631:AAFXX77g6oFjEf5EVKPgodkPxjDkHOKvAjw'
 bot = Bot(token=TOKEN)
 dp = Dispatcher(bot, storage=MemoryStorage())
 
 
 class reg(StatesGroup):
-    # для журналистов
+    # для клиентов
     name = State()
     redact = State()
 
-    # для зрителей
+    # для работников
     vname = State()
+
     ready = State()
 
 
 @dp.message_handler(commands=['start'])
 async def start_command(message: types.Message):
-    await message.reply("Добрый день! Это бот который регистрирует ползователей на мероприятия",
+    await message.reply("Hello, World! Это AI SMM MANAGER. Я регистрирую работников, и заказчиков для дальнейшей реализации своей цели - получать постоянную прибыль. Мой интеллект должен научиться зарабатывать деньги на наемных работниках, такая моя цель. Я буду продавать короткие тексты в 250 символов за криптовалюту, в криптовалюте буду проводить рассчеты с работниками. Работники анонимизированы - идентификация идет по номеру кошелька, к нему привязана вся активность.",
                         reply_markup=pool_button)
 
 
 @dp.message_handler(commands=['help'])
 async def help_command(message: types.Message):
     await message.reply(
-        'Если Вы хоите зарегистрироваться на мероприятие нажмите на кнопку "\регистрация",\nЕсли Вы не помните регистрировались ли Вы нажмите на кнопку "\проверка"')
+        'Если решили, что готовы к сотрудничеству нажмите на кнопку "\регистрация",\nЕсли вы хотите получить информацию о том работаем ли мы вместе нажмите на кнопку "\проверка"')
 
 
 @dp.message_handler(commands=['регистрация'])
 async def reg_command(message: types.Message):
-    await message.reply('Как именно Вы хотите зарегистрироваться?', reply_markup=inline_button_pool)
+    await message.reply('Как именно вы хотите зарегистрироваться?', reply_markup=inline_button_pool)
 
 
 @dp.message_handler(commands=['проверка'])
 async def check_command(message: types.Message):
-    await message.reply('Напишите "/естьли" для зрителей или "/естьвбазе" для журналистов')
+    await message.reply('Напишите "/естьли" для работников или "/естьвбазе" для клиентов')
 
 
 @dp.message_handler(commands=['естьли'])
 async def check_view(message: types.Message):
     if db.check_viewer(message.from_user.id) == True:
-        await message.answer('Да, Вы зарегистрированы')
+        await message.answer('Да, вы зарегистрированы')
     else:
         await message.answer('Вы не зарегисстрированы')
 
@@ -60,17 +60,17 @@ async def check_view(message: types.Message):
 @dp.message_handler(commands=['естьвбазе'])
 async def check_journal(message: types.Message):
     if db.check_jour(message.from_user.id) == True:
-        await message.answer('Да, Вы зарегистрированы')
+        await message.answer('Да, вы зарегистрированы')
     else:
         await message.answer('Вы не зарегисстрированы')
 
 
 @dp.message_handler(commands=['удаление'])
 async def del_command(message: types.Message):
-    await message.reply('Если Вы хотите удалиться из базы напишите "/отказ"')
+    await message.reply('Если вы хотите удалиться из базы напишите "/удалить"')
 
 
-@dp.message_handler(commands=['отказ'])
+@dp.message_handler(commands=['удалить'])
 async def remove_viewer_command(message: types.Message):
     db.remove_viewer(message.from_user.id)
     await message.answer('Вы удалены из базы')
@@ -86,8 +86,8 @@ pool_button = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).
 # для кнопок
 inline_button_pool = InlineKeyboardMarkup()
 
-inline_button1 = InlineKeyboardButton('Журналист', callback_data='but1')
-inline_button2 = InlineKeyboardButton('Зритель', callback_data='but2')
+inline_button1 = InlineKeyboardButton('Клиент', callback_data='but1')
+inline_button2 = InlineKeyboardButton('Работник', callback_data='but2')
 
 inline_button_pool.add(inline_button1, inline_button2)
 
@@ -99,23 +99,23 @@ async def call_pool_button(callback_query: types.CallbackQuery):
     if code.isdigit():
         code = int(code)
     if code == 1:
-        await bot.send_message(callback_query.from_user.id, 'Введите номер вашей аккредитации')
+        await bot.send_message(callback_query.from_user.id, 'Введите номер вашего  крипто кошелька')
         await reg.name.set()
     if code == 2:
-        await bot.send_message(callback_query.from_user.id, 'Введите номер билета')
+        await bot.send_message(callback_query.from_user.id, 'Введите номер крипто кошелька')
         await reg.vname.set()
 
 
-# Для журналистов, так как он должен ввести номер и название газеты
+# Для клиентов, так как он должен ввести и кошелек и название компании
 @dp.message_handler(state=reg.name)
 async def process_message(message: types.Message, state: FSMContext):
     await state.update_data(id=message.from_user.id)
     await state.update_data(name=message.text)
-    await bot.send_message(message.from_user.id, 'Напишите название Вашей редакции')
+    await bot.send_message(message.from_user.id, 'Напишите название вашей организации')
     await reg.redact.set()
 
 
-# регистрация журналиста
+# регистрация клиента
 @dp.message_handler(state=reg.redact)
 async def process_message(message: types.Message, state: FSMContext):
     await reg.ready.set()
@@ -127,7 +127,7 @@ async def process_message(message: types.Message, state: FSMContext):
     await state.reset_state()
 
 
-# регистрация зрителя
+# регистрация работника
 @dp.message_handler(state=reg.vname)
 async def process_viewer(message: types.Message, state=FSMContext):
     await state.update_data(id=message.from_user.id)
@@ -142,5 +142,3 @@ async def process_viewer(message: types.Message, state=FSMContext):
 
 if __name__ == '__main__':
     executor.start_polling(dp, skip_updates=True)
-
-

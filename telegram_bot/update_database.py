@@ -22,7 +22,7 @@ try:
     print("Вы подключены к - ", record, "\n")
 
     # Выполнение SQL-запроса для обновления таблицы
-    update_query = """Update users set wallet = 'kjewr32423bnfskjr' where id = 1"""
+    update_query = """Update employee set wallet = 'kjewr32423bnfskjr' where id = 1"""
     cursor.execute(update_query)
     connection.commit()
     count = cursor.rowcount

@@ -22,11 +22,30 @@ try:
     print("Вы подключены к - ", record, "\n")
 
     # SQL-запрос для создания новой таблицы
-    create_table_query = '''CREATE TABLE users
-                              (ID INT PRIMARY KEY     NOT NULL,
-                              NAME           TEXT    NOT NULL,
-                              WALLET         TEXT); '''
+    create_table_query = '''CREATE TABLE slaves
+                                 (ID INT PRIMARY KEY     NOT NULL,
+                                 WALLET         TEXT); '''
     # Выполнение команды: это создает новую таблицу
     cursor.execute(create_table_query)
     connection.commit()
-    print("Таблица успешно создана в PostgreSQL")
+
+    print("Таблица Работника успешно создана в PostgreSQL")
+
+    # SQL-запрос для создания новой таблицы
+    create_table_query = '''CREATE TABLE cows
+                              (ID INT PRIMARY KEY     NOT NULL,
+                              WALLET         TEXT,
+                              COMPANY        TEXT); '''
+    # Выполнение команды: это создает новую таблицу
+    cursor.execute(create_table_query)
+    connection.commit()
+
+    print("Таблица Клиента успешно создана в PostgreSQL")
+
+except (Exception, Error) as error:
+    print("Ошибка при работе с PostgreSQL", error)
+finally:
+    if connection:
+        cursor.close()
+        connection.close()
+        print("Соединение с PostgreSQL закрыто")

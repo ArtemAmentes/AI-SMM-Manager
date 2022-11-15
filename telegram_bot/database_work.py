@@ -1,11 +1,13 @@
 import psycopg2
 
+
 connection = psycopg2.connect(user="cvcode",
                                   # пароль, который указали при установке PostgreSQL
                                   password="cvcode",
                                   host="45.8.248.84",
                                   port="5432",
                                   database="cvcode_database")
+
 
 # Курсор для выполнения операций с базой данных
 cursor = connection.cursor()
@@ -18,62 +20,60 @@ cursor.execute("SELECT version();")
 record = cursor.fetchone()
 print("Вы подключены к - ", record, "\n")
 
-
-
-
 class DatBase:
 
     def __init__(self):
         # подключение к базе данных
-        self.connection = psycopg2.connect(database='cvcode_database',
-                                           user='cvcode',
-                                           password='cvcode',
-                                           host='45.8.248.84',
-                                           port='5432')
+        self.connection = psycopg2.connect(user="cvcode",
+                                  # пароль, который указали при установке PostgreSQL
+                                  password="cvcode",
+                                  host="45.8.248.84",
+                                  port="5432",
+                                  database="cvcode_database")
         self.cursor = self.connection.cursor()
 
-    # регистрация зрителя
+    # регистрация работника
     def add_viewer(self, data):
         with self.connection:
             self.data = data
-            query = "INSERT INTO viewer (user_id, number) values (%s, %s)"
+            query = "INSERT INTO slaves (id, wallet) values (%s, %s)"
             self.cursor.executemany(query, [data])
             self.connection.commit()
 
-    # проверка зарегистрирован ли зритель в базе
+    # проверка зарегистрирован ли работник в базе
     def check_viewer(self, user_id):
         self.user_id = user_id
         with self.connection:
-            self.cursor.execute("SELECT *FROM viewer WHERE user_id = %s" % user_id)
+            self.cursor.execute("SELECT *FROM slaves WHERE id = %s" % user_id)
             self.connection.commit()
             return bool(self.cursor.fetchall())
 
-    # удаление зрителя из базы
+    # удаление работника из базы
     def remove_viewer(self, user_id):
         self.user_id = user_id
         with self.connection:
-            self.cursor.execute("DELETE FROM viewer WHERE user_id = %s" % user_id)
+            self.cursor.execute("DELETE FROM slaves WHERE id = %s" % user_id)
             self.connection.commit()
 
-    # регистрация журналиста
+    # регистрация клиента
     def add_jour(self, data):
         with self.connection:
             self.data = data
-            query = "INSERT INTO journ (user_id, number, redaction) values (%s, %s, %s)"
+            query = "INSERT INTO cows (id, wallet, company) values (%s, %s, %s)"
             self.cursor.executemany(query, [data])
             self.connection.commit()
 
-    # проверка зарегистрирован ли журналист в базе
+    # проверка зарегистрирован ли клиент в базе
     def check_jour(self, user_id):
         self.user_id = user_id
         with self.connection:
-            self.cursor.execute("SELECT *FROM journ WHERE user_id = %s" % user_id)
+            self.cursor.execute("SELECT *FROM cows WHERE id = %s" % user_id)
             self.connection.commit()
             return bool(self.cursor.fetchall())
 
-    # удаление журналиста из базы
+    # удаление клиента из базы
     def remove_jour(self, user_id):
         self.user_id = user_id
         with self.connection:
-            self.cursor.execute("DELETE FROM journ WHERE user_id = %s" % user_id)
+            self.cursor.execute("DELETE FROM cows WHERE id = %s" % user_id)
             self.connection.commit()
