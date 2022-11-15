@@ -1,16 +1,22 @@
-
 {% extends 'base.html' %}
 
 {% block content %}
-     <h1>{% block title %} AI SMM MANAGER {% endblock %}</h1>
-     {% for post in posts %}
-            <a href="#">
-                <h2>{{ url_for('post', post_id=post['id']) }}</h2>
-            </a>
-            <span class="badge badge-primary">{{ post['created'] }}</span>
-            <a href="{{ url_for('edit', id=post['id']) }}">
-                <span class="badge badge-warning">Edit</span>
-             </a>
-            <hr>
-        {% endfor %}
+    <h1>{% block title %} Books {% endblock %}</h1>
+    {% for book in books %}
+        <div class='book'>
+            <h3>#{{ book[0] }} - {{ book[1] }} BY {{ book[2] }}</h3>
+            <i><p>({{ book[3] }} pages)</p></i>
+            <p class='review'>{{ book[4] }}</p>
+            <i><p>Added {{ book[5] }}</p></i>
+        </div>
+    {% endfor %}
+
+    {% for slave in slaves %}
+        <div class='slave'>
+            <h3>#{{ slave[0] }} - {{ slave[1] }} BY {{ slave[1] }}</h3>
+            <i><p>({{ slave[1] }} pages)</p></i>
+            <p class='review'>{{ slave[1] }}</p>
+            <i><p>Added {{ slave[1] }}</p></i>
+        </div>
+    {% endfor %}
 {% endblock %}
