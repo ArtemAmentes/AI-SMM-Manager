@@ -5,30 +5,31 @@
     <title>{% block title %} {% endblock %} - AI-SMM-MANAGER</title>
     <style>
         nav a {
-            color: #d64161;
+            color: #000000;
             font-size: 3em;
             margin-left: 50px;
             text-decoration: none;
         }
 
-        .book {
+        .wallet {
             padding: 20px;
             margin: 10px;
-            background-color: #f7f4f4;
+            background-color: #00a86b;
         }
 
-        .review {
+        .task {
                 margin-left: 50px;
                 font-size: 20px;
         }
+
 
     </style>
 </head>
 <body>
     <nav>
-        <a href="{{ url_for('index') }}">Работники</a>
+        <a href="{{ url_for('index') }}">Выполненные задания</a>
         <a href="{{ url_for('create') }}">Выполнить задание</a>
-        <a href="#">Вакансия</a>
+        <a href="{{ url_for('vacancy') }}">Вакансия</a>
     </nav>
     <hr>
     <div class="content">

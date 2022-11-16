@@ -1,17 +1,15 @@
-import os
 import psycopg2
-from flask import Flask, render_template
 from flask import Flask, render_template, request, url_for, redirect
 
 app = Flask(__name__)
 
+
 def get_db_connection():
     conn = psycopg2.connect(user="cvcode",
-                                  # пароль, который указали при установке PostgreSQL
-                                  password="cvcode",
-                                  host="45.8.248.84",
-                                  port="5432",
-                                  database="cvcode_database")
+                            password="cvcode",
+                            host="45.8.248.84",
+                            port="5432",
+                            database="cvcode_database")
     return conn
 
 
@@ -19,27 +17,25 @@ def get_db_connection():
 def index():
     conn = get_db_connection()
     cur = conn.cursor()
-    cur.execute('SELECT * FROM books;')
-    books = cur.fetchall()
-    cur.execute('SELECT * FROM slaves;')
-    slaves = cur.fetchall()
+    cur.execute('SELECT * FROM tasks;')
+    tasks = cur.fetchall()
     cur.close()
     conn.close()
-    return render_template('index.html', books=books, slaves=slaves)
+    return render_template('index.html', tasks=tasks)
+
 
 @app.route('/create/', methods=('GET', 'POST'))
 def create():
     if request.method == 'POST':
-        title = request.form['title']
-        author = request.form['author']
-        pages_num = int(request.form['pages_num'])
-        review = request.form['review']
+        wallet = request.form['wallet']
+        task = request.form['task']
+
 
         conn = get_db_connection()
         cur = conn.cursor()
-        cur.execute('INSERT INTO books (title, author, pages_num, review)'
-                    'VALUES (%s, %s, %s, %s)',
-                    (title, author, pages_num, review))
+        cur.execute('INSERT INTO tasks (wallet, task)'
+                    'VALUES (%s, %s)',
+                    (wallet, task))
         conn.commit()
         cur.close()
         conn.close()
@@ -47,12 +43,10 @@ def create():
 
     return render_template('create.html')
 
+
 @app.route('/vacancy')
 def vacancy():
-
     return render_template('vacancy.html')
-
-
 
 
 if __name__ == '__main__':
