@@ -128,7 +128,7 @@ async def process_message(message: types.Message, state: FSMContext):
         await state.reset_state()
     except Exception:
         await message.reply('Вы уже зарегистрированы. Начните заново с командой /start')
-        pass
+        await state.reset_state()
 
 # регистрация работника
 @dp.message_handler(state=reg.vname)
@@ -144,7 +144,7 @@ async def process_viewer(message: types.Message, state=FSMContext):
         await state.reset_state()
     except Exception:
         await message.reply('Вы уже зарегистрированы. Начните заново с командой /start')
-        pass
+        await state.reset_state()
 
 if __name__ == '__main__':
     executor.start_polling(dp, skip_updates=True)
