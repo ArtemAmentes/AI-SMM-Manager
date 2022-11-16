@@ -46,23 +46,23 @@ async def reg_command(message: types.Message):
 
 @dp.message_handler(commands=['проверка'])
 async def check_command(message: types.Message):
-    await message.reply('Напишите "/естьли" для работников или "/естьвбазе" для клиентов')
+    await message.reply('Напишите "/нанят" для работников или "/работаем" для клиентов')
 
 
-@dp.message_handler(commands=['естьли'])
+@dp.message_handler(commands=['нанят'])
 async def check_view(message: types.Message):
     if db.check_viewer(message.from_user.id) == True:
-        await message.answer('Да, вы зарегистрированы')
+        await message.answer('Да, вы наняты')
     else:
-        await message.answer('Вы не зарегисстрированы')
+        await message.answer('Вас нет среди работников')
 
 
-@dp.message_handler(commands=['естьвбазе'])
+@dp.message_handler(commands=['работаем'])
 async def check_journal(message: types.Message):
     if db.check_jour(message.from_user.id) == True:
-        await message.answer('Да, вы зарегистрированы')
+        await message.answer('Да, мы сотрудничаем')
     else:
-        await message.answer('Вы не зарегисстрированы')
+        await message.answer('Давайте начнем работать вместе')
 
 
 @dp.message_handler(commands=['удаление'])
@@ -118,27 +118,33 @@ async def process_message(message: types.Message, state: FSMContext):
 # регистрация клиента
 @dp.message_handler(state=reg.redact)
 async def process_message(message: types.Message, state: FSMContext):
-    await reg.ready.set()
-    await state.update_data(redact=message.text)
-    user_data = await state.get_data()
-    data = tuple(user_data.values())
-    db.add_jour(data)
-    await message.reply('Вы успешно зарегистрированы')
-    await state.reset_state()
-
+    try:
+        await reg.ready.set()
+        await state.update_data(redact=message.text)
+        user_data = await state.get_data()
+        data = tuple(user_data.values())
+        db.add_jour(data)
+        await message.reply('Вы успешно зарегистрированы')
+        await state.reset_state()
+    except Exception:
+        await message.reply('Вы уже зарегистрированы. Начните заново с командой /start')
+        pass
 
 # регистрация работника
 @dp.message_handler(state=reg.vname)
 async def process_viewer(message: types.Message, state=FSMContext):
-    await state.update_data(id=message.from_user.id)
-    await state.update_data(name=message.text)
-    await reg.ready.set()
-    user_data = await state.get_data()
-    data = tuple(user_data.values())
-    db.add_viewer(data)
-    await message.reply('Вы успешно зарегистрированы')
-    await state.reset_state()
-
+    try:
+        await state.update_data(id=message.from_user.id)
+        await state.update_data(name=message.text)
+        await reg.ready.set()
+        user_data = await state.get_data()
+        data = tuple(user_data.values())
+        db.add_viewer(data)
+        await message.reply('Вы успешно зарегистрированы')
+        await state.reset_state()
+    except Exception:
+        await message.reply('Вы уже зарегистрированы. Начните заново с командой /start')
+        pass
 
 if __name__ == '__main__':
     executor.start_polling(dp, skip_updates=True)
