@@ -39,7 +39,7 @@ services:
       POSTGRES_PASSWORD: cvcode
       POSTGRES_DB: cvcode_database
     networks:
-      - cvcode
+      - cv_code
     ports:
       - 5432:5432
     volumes:
