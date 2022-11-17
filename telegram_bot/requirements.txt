@@ -17,6 +17,7 @@ magic-filter==1.0.9
 MarkupSafe==2.1.1
 multidict==6.0.2
 psycopg==3.1.4
+psycopg2-binary==2.9.5
 psycopg2==2.9.5
 pyTelegramBotAPI==4.7.1
 pytz==2022.6
