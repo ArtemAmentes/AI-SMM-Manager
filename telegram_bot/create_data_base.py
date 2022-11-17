@@ -21,8 +21,8 @@ try:
     record = cursor.fetchone()
     print("Вы подключены к - ", record, "\n")
 
-    cur.execute('DROP TABLE IF EXISTS slaves;')
-    cur.execute('DROP TABLE IF EXISTS cows;')
+    cursor.execute('DROP TABLE IF EXISTS slaves;')
+    cursor.execute('DROP TABLE IF EXISTS cows;')
 
     # SQL-запрос для создания новой таблицы
     create_table_query = '''CREATE TABLE slaves
