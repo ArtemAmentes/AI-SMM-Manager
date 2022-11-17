@@ -2,20 +2,32 @@ version: "3"
 
 services:
   telegram_bot:
+    build:
+      context: ./telegram_bot
+      dockerfile: dockerfile
+      network:
+        cv_code
+
   web_app:
+    build:
+      context: ./web_app
+      dockerfile: dockerfile
+      network:
+        cv_code
+
   postgre_db:
     image: postgres:14.2-alpine
-      restart: always
-      environment:
-        POSTGRES_USER: cvcode
-        POSTGRES_PASSWORD: cvcode
-        POSTGRES_DB: cvcode_database
-      networks:
-        - сеть
-      ports:
-        - порт внешний:5432
-      volumes:
-        - db-data:/var/lib/postgresql/data
+    restart: always
+    environment:
+      POSTGRES_USER: cvcode
+      POSTGRES_PASSWORD: cvcode
+      POSTGRES_DB: cvcode_database
+    networks:
+      - cvcode
+    ports:
+      - 5432:5432
+    volumes:
+      - db-data:/var/lib/postgresql/data
 
 networks:
   cvcode:
