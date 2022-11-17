@@ -4,7 +4,7 @@ conn = psycopg2.connect(user="cvcode",
 
                         password="cvcode",
                         host="postgre_db",
-                        port="5000",
+                        port="5432",
                         database="cvcode_database")
 
 cur = conn.cursor()

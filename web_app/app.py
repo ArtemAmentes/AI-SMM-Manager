@@ -8,7 +8,7 @@ def get_db_connection():
     conn = psycopg2.connect(user="cvcode",
                             password="cvcode",
                             host="postgre_db",
-                            port="5000",
+                            port="5432",
                             database="cvcode_database")
     return conn
 
@@ -50,4 +50,4 @@ def vacancy():
 
 
 if __name__ == '__main__':
-    app.run(host='web_app', port='5000')
+    app.run(host="web_app", port="7654")
