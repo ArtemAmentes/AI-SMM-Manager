@@ -1,13 +1,25 @@
-Указывается сервис и путь
-для докер файл
-прослушивать порт и запустить rest api
-ФЛАСК - докер файл dokerfile
-ТЕЛЕГРАМ бот - dokerfile
+version: "3"
 
+services:
+  telegram_bot:
+  web_app:
+  postgre_db:
+    image: postgres:14.2-alpine
+      restart: always
+      environment:
+        POSTGRES_USER: cvcode
+        POSTGRES_PASSWORD: cvcode
+        POSTGRES_DB: cvcode_database
+      networks:
+        - сеть
+      ports:
+        - порт внешний:5432
+      volumes:
+        - db-data:/var/lib/postgresql/data
 
+networks:
+  cvcode:
+    external: true
 
-
-
-
-postgres название сервиса и image environments название роль базы данных и прочие данные
-ports внешний и внутренний - коммуникация должна между сервисами идти по имени сервиса а не по ip и адресу и порт тоже не пишем
+volumes:
+  db-data:
