@@ -7,6 +7,10 @@ services:
       dockerfile: dockerfile
       network:
         cv_code
+      expose:
+        - 7653
+      ports:
+        - 7653:7653
 
   web_app:
     build:
@@ -14,6 +18,10 @@ services:
       dockerfile: dockerfile
       network:
         cv_code
+      expose:
+        - 7654
+      ports:
+        - 7654:7654
 
   postgre_db:
     image: postgres:14.2-alpine
