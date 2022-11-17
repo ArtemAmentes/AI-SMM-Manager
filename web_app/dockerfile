@@ -7,6 +7,6 @@ RUN pip3 install -r requirements.txt
 
 EXPOSE 7654
 
+RUN python3 init_db.py
 ENTRYPOINT ["python3"]
-CMD ["init_db.py"]
 CMD ["app.py"]
