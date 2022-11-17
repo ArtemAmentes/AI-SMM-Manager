@@ -4,7 +4,7 @@ import psycopg2
 connection = psycopg2.connect(user="cvcode",
                                   # пароль, который указали при установке PostgreSQL
                                   password="cvcode",
-                                  host="45.8.248.84",
+                                  host="postgre_db",
                                   port="5432",
                                   database="cvcode_database")
 
@@ -27,7 +27,7 @@ class DatBase:
         self.connection = psycopg2.connect(user="cvcode",
                                   # пароль, который указали при установке PostgreSQL
                                   password="cvcode",
-                                  host="45.8.248.84",
+                                  host="postgre_db",
                                   port="5432",
                                   database="cvcode_database")
         self.cursor = self.connection.cursor()

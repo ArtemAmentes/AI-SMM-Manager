@@ -5,23 +5,31 @@ services:
     build:
       context: ./telegram_bot
       dockerfile: dockerfile
-      network:
-        cv_code
-      expose:
-        - 7653
-      ports:
-        - 7653:7653
+    networks:
+      - cv_code
+    ports:
+      - 7653:7653
+    expose:
+      - 7653
+    links:
+      - postgre_db
+    depends_on:
+      - postgre_db
 
   web_app:
     build:
       context: ./web_app
       dockerfile: dockerfile
-      network:
-        cv_code
-      expose:
-        - 7654
-      ports:
-        - 7654:7654
+    networks:
+      - cv_code
+    expose:
+      - 7654
+    ports:
+      - 7654:7654
+    links:
+      - postgre_db
+    depends_on:
+      - postgre_db
 
   postgre_db:
     image: postgres:14.2-alpine
