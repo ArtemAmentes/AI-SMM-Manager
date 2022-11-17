@@ -50,4 +50,4 @@ def vacancy():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='web_app', port='5000')
