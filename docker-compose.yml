@@ -6,7 +6,6 @@ services:
       context: ./telegram_bot
       dockerfile: dockerfile
     command:
-      - create_data_base.py
       - bot_main.py
     networks:
       - cv_code
@@ -18,13 +17,37 @@ services:
       - postgre_db
     depends_on:
       - postgre_db
+      - db_create
 
-  web_app:
+  db_init:
     build:
       context: ./web_app
       dockerfile: dockerfile
     command:
       - init_db.py
+    networks:
+      - cv_code
+    links:
+      - postgre_db
+    depends_on:
+      - postgre_db
+  db_create:
+    build:
+      context: ./telegram_bot
+      dockerfile: dockerfile
+    command:
+      - create_data_base.py
+    networks:
+      - cv_code
+    links:
+      - postgre_db
+    depends_on:
+      - postgre_db
+  web_app:
+    build:
+      context: ./web_app
+      dockerfile: dockerfile
+    command:
       - app.py
     networks:
       - cv_code
