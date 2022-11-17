@@ -3,10 +3,14 @@ FROM python:3.9.15-alpine3.15
 WORKDIR /web_app
 COPY . .
 
+RUN apk add postgresql
+
 RUN pip3 install -r requirements.txt
 
 EXPOSE 7654
 
 RUN python3 init_db.py
+
 ENTRYPOINT ["python3"]
+
 CMD ["app.py"]
