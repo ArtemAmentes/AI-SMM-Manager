@@ -10,5 +10,5 @@ EXPOSE 7653
 RUN python3 create_data_base.py
 
 ENTRYPOINT ["python3"]
-CMD ["database_work.py"]
+
 CMD ["bot_main.py"]
