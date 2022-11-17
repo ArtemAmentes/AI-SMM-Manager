@@ -5,6 +5,9 @@ services:
     build:
       context: ./telegram_bot
       dockerfile: dockerfile
+    command:
+      - create_data_base.py
+      - bot_main.py
     networks:
       - cv_code
     ports:
@@ -20,6 +23,9 @@ services:
     build:
       context: ./web_app
       dockerfile: dockerfile
+    command:
+      - init_db.py
+      - app.py
     networks:
       - cv_code
     expose:
