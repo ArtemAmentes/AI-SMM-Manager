@@ -1,0 +1,12 @@
+FROM python:3.9.15-alpine3.15
+
+WORKDIR /web_app
+COPY . .
+
+RUN pip3 install -r requirements.txt
+
+EXPOSE 7654
+
+ENTRYPOINT ["python3"]
+CMD ["init_db.py"]
+CMD ["app.py"]
